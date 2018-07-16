@@ -9,4 +9,6 @@ class User < ActiveRecord::Base
          :trackable,
          :validatable
   include DeviseTokenAuth::Concerns::User
+
+  has_many :tasks, dependent: :destroy
 end
