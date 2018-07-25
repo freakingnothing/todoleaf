@@ -154,7 +154,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aasm
+  aasm (~> 4.12)
   ancestry
   bootsnap (>= 1.1.0)
   byebug

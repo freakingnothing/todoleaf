@@ -4,7 +4,13 @@ module V1
 
     # GET /v1/tasks
     def index
-      @tasks = current_user.tasks.roots
+      @tasks = current_user.tasks.roots.active
+
+      render json: @tasks
+    end
+
+    def index_archived_tasks
+      @tasks = current_user.tasks.roots.archived
 
       render json: @tasks
     end
@@ -36,6 +42,10 @@ module V1
     # PATCH/PUT /v1/tasks/1
     def update
       @task = Task.find(params[:id])
+
+      if params[:aasm_event]
+        @task.send(params[:aasm_event])
+      end
 
       if @task.update(task_params)
         render json: @task, status: :ok
