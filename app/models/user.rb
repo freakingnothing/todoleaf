@@ -11,4 +11,5 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   has_many :tasks, dependent: :destroy
+  acts_as_tagger
 end

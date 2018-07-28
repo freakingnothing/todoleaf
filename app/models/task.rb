@@ -32,4 +32,5 @@ class Task < ApplicationRecord
 
   belongs_to :user
   has_ancestry
+  acts_as_taggable
 end

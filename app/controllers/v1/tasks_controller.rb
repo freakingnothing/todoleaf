@@ -33,6 +33,7 @@ module V1
       end
 
       if @task.save
+        current_user.tag(@task, with: params[:tag_list].join(", "), on: :tags)
         render json:@task, status: :created
       else
         head(:error)
@@ -48,6 +49,7 @@ module V1
       end
 
       if @task.update(task_params)
+        current_user.tag(@task, with: params[:tag_list].join(", "), on: :tags) if params[:tag_list]
         render json: @task, status: :ok
       else
         head(:error)
@@ -68,7 +70,7 @@ module V1
     private
 
     def task_params
-      params.require(:task).permit(:body)
+      params.require(:task).permit(:body, :tag_list)
     end
   end
 end
