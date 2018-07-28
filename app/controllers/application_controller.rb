@@ -8,4 +8,9 @@ class ApplicationController < ActionController::API
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :nickname, :image])
   end
+
+  def pagination_headers(pagy)
+    response.headers['Total-Pages'] = pagy.pages.to_s
+    response.headers['Per-Page'] = pagy.items.to_s if pagy.pages > 1
+  end
 end

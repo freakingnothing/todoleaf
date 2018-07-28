@@ -1,16 +1,19 @@
 module V1
   class TasksController < ApplicationController
+    include Pagy::Backend
     before_action :authenticate_user!
 
     # GET /v1/tasks
     def index
-      @tasks = current_user.tasks.roots.active
-
+      @pagy, @tasks = pagy(current_user.tasks.roots.active)
+      pagination_headers(@pagy)
       render json: @tasks
+
     end
 
     def index_archived_tasks
-      @tasks = current_user.tasks.roots.archived
+      @pagy, @tasks = page(current_user.tasks.roots.archived)
+      pagination_headers(@pagy)
 
       render json: @tasks
     end

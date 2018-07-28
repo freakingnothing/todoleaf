@@ -1,10 +1,12 @@
 module V1
   class TagsController < ApplicationController
+    include Pagy::Backend
     before_action :authenticate_user!
 
     # GET /v1/tags
     def index
-      @tags = current_user.owned_tags.most_used
+      @pagy, @tags = pagy(current_user.owned_tags.most_used)
+      pagination_headers(@pagy)
 
       render json: @tags
     end
