@@ -36,7 +36,7 @@ module V1
       end
 
       if @task.save
-        current_user.tag(@task, with: params[:tag_list].join(", "), on: :tags)
+        current_user.tag(@task, with: params[:tag_list].join(", "), on: :tags) if params[:tag_list]
         render json:@task, status: :created
       else
         head(:error)

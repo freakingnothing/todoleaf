@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: tasks
+#
+#  id         :bigint(8)        not null, primary key
+#  body       :string
+#  user_id    :bigint(8)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  ancestry   :string
+#  aasm_state :string
+#  aasm_event :string
+#
+
 class Task < ApplicationRecord
   include AASM
 
