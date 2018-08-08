@@ -11,6 +11,7 @@ module V1
 
     end
 
+    # GET /v1/archived
     def index_archived_tasks
       @pagy, @tasks = page(current_user.tasks.roots.archived)
       pagination_headers(@pagy)

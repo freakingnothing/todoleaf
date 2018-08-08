@@ -36,6 +36,8 @@ gem 'aasm', '~> 4.12'
 
 gem 'acts-as-taggable-on', '~> 6.0'
 
+gem 'fast_jsonapi'
+
 gem 'pagy'
 
 group :development, :test do
