@@ -2,14 +2,24 @@
 #
 # Table name: tasks
 #
-#  id         :bigint(8)        not null, primary key
-#  body       :string
-#  user_id    :bigint(8)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  ancestry   :string
-#  aasm_state :string
-#  aasm_event :string
+#  id             :bigint(8)        not null, primary key
+#  aasm_event     :string
+#  aasm_state     :string
+#  ancestry       :string
+#  ancestry_depth :integer          default(0)
+#  body           :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  user_id        :bigint(8)
+#
+# Indexes
+#
+#  index_tasks_on_ancestry  (ancestry)
+#  index_tasks_on_user_id   (user_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
 #
 
 class Task < ApplicationRecord
@@ -45,6 +55,6 @@ class Task < ApplicationRecord
   end
 
   belongs_to :user
-  has_ancestry
+  has_ancestry cache_depth: true
   acts_as_taggable
 end
