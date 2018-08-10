@@ -14,7 +14,7 @@ module V1
     # GET /v1/tags/1
     def show
       @tag = ActsAsTaggableOn::Tag.find(params[:id])
-      @tasks = Task.tagged_with(@tag, owner_by: current_user)
+      @tasks = Task.tagged_with(@tag, owner_by: current_user).select(:id, :body, :aasm_state)
 
       render json: @tasks
     end

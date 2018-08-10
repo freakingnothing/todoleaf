@@ -5,24 +5,35 @@ module V1
 
     # GET /v1/tasks
     def index
-      @pagy, @tasks = pagy(current_user.tasks.roots.active)
+      @pagy, @tasks = pagy(current_user.tasks.roots.select(:id, :body, :aasm_state).active)
       pagination_headers(@pagy)
-      render json: @tasks
+
+      render json: @tasks, methods: :all_tags_list
 
     end
 
     # GET /v1/archived
     def index_archived_tasks
-      @pagy, @tasks = page(current_user.tasks.roots.archived)
+      @pagy, @tasks = pagy(current_user.tasks.roots.select(:id, :body, :aasm_state).archived)
       pagination_headers(@pagy)
 
-      render json: @tasks
+      render json: @tasks, methods: :all_tags_list
     end
 
     # GET /v1/tasks/1
     def show
-      @task = Task.find(params[:id]).subtree.arrange_serializable
-
+      @task = Task.find(params[:id]).subtree.arrange_serializable do |parent, children|
+        {
+          id: parent.id,
+          body: parent.body,
+          aasm_state: parent.aasm_state,
+          ancestry: parent.ancestry,
+          all_tags_list: parent.all_tags_list,
+          children_exist: parent.has_children?,
+          children: children
+        }
+      end
+      
       render json: @task
     end
 
