@@ -5,7 +5,7 @@ module V1
 
     # GET /v1/tasks
     def index
-      @pagy, @tasks = pagy(current_user.tasks.roots.select(:id, :body, :aasm_state).active)
+      @pagy, @tasks = pagy(current_user.tasks.roots.where(aasm_state: ['active', 'done']).select(:id, :body, :aasm_state))
       pagination_headers(@pagy)
 
       render json: @tasks, methods: :all_tags_list
