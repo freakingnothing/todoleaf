@@ -29,7 +29,7 @@ module V1
           aasm_state: parent.aasm_state,
           ancestry: parent.ancestry,
           all_tags_list: parent.all_tags_list,
-          children_exist: parent.has_children?,
+          # children_amount: count_children(parent),
           children: children
         }
       end
@@ -49,7 +49,7 @@ module V1
 
       if @task.save
         current_user.tag(@task, with: params[:tag_list].join(", "), on: :tags) if params[:tag_list]
-        render json:@task, status: :created
+        render json: @task, status: :created, methods: :all_tags_list
       else
         head(:error)
       end
@@ -65,7 +65,7 @@ module V1
 
       if @task.update(task_params)
         current_user.tag(@task, with: params[:tag_list].join(", "), on: :tags) if params[:tag_list]
-        render json: @task, status: :ok
+        render json: @task, status: :ok, methods: :all_tags_list
       else
         head(:error)
       end
@@ -86,6 +86,10 @@ module V1
 
     def task_params
       params.require(:task).permit(:body, :tag_list)
+    end
+
+    def count_children(task)
+      return task.children.count
     end
   end
 end
